@@ -30,11 +30,11 @@
                 {% for task in tasks %}   <!-- from views.py, context dictionary section we get tasks value, SHOULD BE SAME AS VIEW.PY CONTEXT.VIEW NAME -->
                 <div class="card m-1">
                     <div class="card-body">
-                        {{ task.task }} <!-- here 1st task act as i'th element and 2nd task act as value (which is located in model.py)    SUBHAJIT PORYA -->
+                        {{ task.task }} <!-- here 1st task act as i'th element and 2nd task act as value (which is located in model.py) -->
                         <span style="position: relative; float: right;">
-                            <a class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
-                            <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                            <a href={% url 'mark_as_done' task.pk %} class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
+                            <a href={% url 'mark_as_delete' task.pk %} class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                            <a href={% url 'mark_as_edit' task.pk %} class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                         </span>
                     </div>
                 </div>
@@ -44,17 +44,22 @@
             <div class="col-md-5 col-lg-5">
                 <h5>Completed Tasks</h5>
                 <!-- List of all the tasks that have completed -->
+                {% for task in completed_task %}
                 <div class="card m-1">
                     <div class="card-body">
-                        This is the completed task.
+                        {{task}}
+                        <span style="position: relative; float: right;">
+                        <a href={% url 'mark_as_undone' task.pk %} class="btn btn-danger"><i class="fa fa-times"></i> Mark as undone</a>
+                        </span>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
                 <!-- To Do Form -->
-                <form action="{% url 'addTask'%}" method = "POST">
+                <form action="{% url 'addTask' %}" method = "POST">
                     {% csrf_token %} <!-- cross site request forgery use to control cyber attack to hack user input-->
                     <div class="form-group">
                         <span style="display: flex;">
